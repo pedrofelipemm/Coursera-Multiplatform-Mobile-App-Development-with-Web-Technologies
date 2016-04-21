@@ -59,7 +59,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
       views: {
         'mainContent': {
           templateUrl: 'templates/menu.html',
-          controller: ''
+          controller: 'MenuController'
         }
       }
     })
@@ -69,12 +69,10 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers','conFusion.service
     views: {
       'mainContent': {
         templateUrl: 'templates/dishdetail.html',
-        controller: ''
+        controller: 'DishDetailController'
       }
     }
   });
 
-  // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
-
 });
