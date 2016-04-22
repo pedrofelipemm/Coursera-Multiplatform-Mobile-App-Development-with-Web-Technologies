@@ -1,27 +1,25 @@
 <ion-view view-title="About Us">
- 	<ion-content>
+	<ion-content>
     	<div class="card">
-        	<div class="item item-divider">
-            	<h2>Our History</h2>
-            </div>
-        	<div class="item item-text-wrap">
-    			<p>{{ourHistory}}</p>
-    		</div>	
-		</div>
-
-		<div class="card">
-			<div class="item item-divider">
-            	<h2>Corporrate Leadership</h2>
-            </div>
-			<div class="list list-inset">
-				<a class="item item-avatar item-text-wrap" href="#" ng-repeat="leader in leaders">
-      				<img src="{{baseURL + leader.image}}">
-      				<h4><strong>{{leader.name}}</strong></h4>
-      				<h4><strong>{{leader.designation}}</strong></h4>
-      				<p>{{leader.description}}</p>
-    			</a>
-    		</div>
-		</div>
-
+      		<div class="item item-divider">
+        		Our History
+      		</div>
+      		<div class="item item-text-wrap">
+        		<p>{{ourHistory}}</p>
+      		</div>
+    	</div>
+    	<div class="list list-inset">
+      		<div class="item item-divider">
+        		Corporate Leadership
+      		</div>
+      		<ion-list>
+        		<ion-item ng-repeat="leader in leaders" class="item item-avatar-left item-text-wrap">
+            		<img ng-src="{{baseURL + leader.image}}" alt="Image" />
+            		<h2>{{leader.name}}</h2>
+		            <h4>{{leader.designation}}</h4>
+		            <p>{{leader.description}}</p>
+        		</ion-item>
+      		</ion-list>
+    	</div>
   	</ion-content>
 </ion-view>

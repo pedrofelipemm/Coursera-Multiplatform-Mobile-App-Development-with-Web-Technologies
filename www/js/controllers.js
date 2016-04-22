@@ -1,38 +1,63 @@
 angular.module('conFusion.controllers', [])
 
-  .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+    .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
-    // With the new view caching in Ionic, Controllers are only called
-    // when they are recreated or on app start, instead of every page change.
-    // To listen for when this page is active (for example, to refresh data),
-    // listen for the $ionicView.enter event:
-    //$scope.$on('$ionicView.enter', function(e) {
-    //});
+        // With the new view caching in Ionic, Controllers are only called
+        // when they are recreated or on app start, instead of every page change.
+        // To listen for when this page is active (for example, to refresh data),
+        // listen for the $ionicView.enter event:
+        //$scope.$on('$ionicView.enter', function(e) {
+        //});
 
-    $scope.loginData = {};
+        $scope.loginData = {};
+        $scope.reservation = {};
 
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
+        $ionicModal.fromTemplateUrl('templates/reserve.html', {
+            scope: $scope
+        }).then(function(modal) {
+            $scope.reserveform = modal;
+        });
 
-    $scope.closeLogin = function() {
-      $scope.modal.hide();
-    };
+        $scope.closeReserve = function() {
+            $scope.reserveform.hide();
+        };
 
-    $scope.login = function() {
-      $scope.modal.show();
-    };
+        $scope.reserve = function() {
+            $scope.reserveform.show();
+        };
 
-    $scope.doLogin = function() {
-      console.log('Doing login', $scope.loginData);
+        $scope.doReserve = function() {
+            console.log('Doing reservation', $scope.reservation);
 
-      $timeout(function() {
-        $scope.closeLogin();
-      }, 1000);
-    };
-  })
+            // Simulate a reservation delay. Remove this and replace with your reservation
+            // code if using a server system
+            $timeout(function() {
+                $scope.closeReserve();
+            }, 1000);
+        };
+
+        $ionicModal.fromTemplateUrl('templates/login.html', {
+            scope: $scope
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+
+        $scope.closeLogin = function() {
+            $scope.modal.hide();
+        };
+
+        $scope.login = function() {
+            $scope.modal.show();
+        };
+
+        $scope.doLogin = function() {
+            console.log('Doing login', $scope.loginData);
+
+            $timeout(function() {
+                $scope.closeLogin();
+            }, 1000);
+        };
+    })
 
   .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function($scope, menuFactory, baseURL) {
     $scope.baseURL = baseURL;
