@@ -47,7 +47,21 @@ angular.module('conFusion.services', ['ngResource'])
             favorites.push({id: index});
         };
 
+        function deleteFromFavorites(index) {
+            for (var i = 0; i < favorites.length; i++) {
+                if (favorites[i].id == index) {
+                    favorites.splice(i, 1);
+                }
+            }
+        };
+
+        function getFavorites() {
+            return favorites;
+        };
+
         return {
-            addToFavorites: addToFavorites
+            addToFavorites: addToFavorites,
+            deleteFromFavorites: deleteFromFavorites,
+            getFavorites: getFavorites
         };
     }]);

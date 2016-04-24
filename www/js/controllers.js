@@ -1,4 +1,18 @@
 angular.module('conFusion.controllers', [])
+    
+    //TODO: extract to another file
+    .filter('favoriteFilter', function () {
+        return function (dishes, favorites) {
+            var out = [];
+            for (var i = 0; i < favorites.length; i++) {
+                for (var j = 0; j < dishes.length; j++) {
+                    if (dishes[j].id === favorites[i].id){
+                        out.push(dishes[j]);
+                    }
+                }
+            }
+            return out;
+    }})
 
     .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
@@ -58,6 +72,32 @@ angular.module('conFusion.controllers', [])
             }, 1000);
         };
     })
+
+    .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
+        function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+
+        $scope.baseURL = baseURL;
+        $scope.shouldShowDelete = false;
+
+        $scope.favorites = favoriteFactory.getFavorites();
+
+        $scope.dishes = menuFactory.getDishes().query(
+            function (response) {
+                $scope.dishes = response;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            });
+
+        $scope.toggleDelete = function () {
+            $scope.shouldShowDelete = !$scope.shouldShowDelete;
+        }
+
+        $scope.deleteFavorite = function (id) {
+            favoriteFactory.deleteFromFavorites(id);
+            $scope.shouldShowDelete = false;
+        }
+    }])
 
     .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
         function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
