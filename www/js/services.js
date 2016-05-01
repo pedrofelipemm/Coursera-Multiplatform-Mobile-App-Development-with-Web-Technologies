@@ -16,11 +16,11 @@ angular.module('conFusion.services', ['ngResource'])
         ];
       
         this.getDishes = function() {                    
-            return $resource(baseURL+"dishes/:id",null,  {'update':{method:'PUT' }});
+            return $resource(baseURL + "dishes/:id", null, {'update':{method:'PUT'}});
         };
 
         this.getPromotion = function() {
-            return $resource(baseURL+"promotions/:id");;
+            return $resource(baseURL + "promotions/:id");;
         };
 
     }])
