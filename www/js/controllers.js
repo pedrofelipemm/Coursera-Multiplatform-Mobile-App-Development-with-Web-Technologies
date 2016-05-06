@@ -14,7 +14,7 @@ angular.module('conFusion.controllers', [])
             return out;
     }})
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $localStorage) {
 
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
@@ -23,7 +23,7 @@ angular.module('conFusion.controllers', [])
         //$scope.$on('$ionicView.enter', function(e) {
         //});
 
-        $scope.loginData = {};
+        $scope.loginData = $localStorage.get('userinfo','{}');
         $scope.reservation = {};
 
         $ionicModal.fromTemplateUrl('templates/reserve.html', {
@@ -66,6 +66,7 @@ angular.module('conFusion.controllers', [])
 
         $scope.doLogin = function() {
             console.log('Doing login', $scope.loginData);
+            $localStorage.store('userinfo', $scope.loginData);
 
             $timeout(function() {
                 $scope.closeLogin();

@@ -54,4 +54,19 @@ angular.module('conFusion.services', ['ngResource'])
             deleteFromFavorites: deleteFromFavorites,
             getFavorites: getFavorites
         };
+    }])
+
+    .factory('$localStorage', ['$window', function($window) {
+        return {
+            store: function(key, value) {
+                typeof key === 'string' ? 
+                    $window.localStorage[key] = JSON.stringify(value) : 
+                    $window.localStorage[key] = value;
+            },
+            get: function(key, defaultValue) {
+                return typeof key === 'string' ?
+                    JSON.parse($window.localStorage[key] || defaultValue) :
+                    $window.localStorage[key] || defaultValue;
+            }
+        }
     }]);
