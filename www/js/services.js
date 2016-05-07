@@ -23,9 +23,9 @@ angular.module('conFusion.services', ['ngResource'])
         return $resource(baseURL+"feedback/:id");
     }])
 
-    .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+    .factory('favoriteFactory', ['$resource', 'baseURL', '$localStorage', function ($resource, baseURL, $localStorage) {
         
-        var favorites = [];
+        var favorites = $localStorage.getObject('favorites', '[]');
 
         function addToFavorites(index) {
             for (var i = 0; i < favorites.length; i++) {
@@ -35,6 +35,7 @@ angular.module('conFusion.services', ['ngResource'])
             }
             
             favorites.push({id: index});
+            $localStorage.storeObject('favorites', favorites);
         };
 
         function deleteFromFavorites(index) {
@@ -43,6 +44,7 @@ angular.module('conFusion.services', ['ngResource'])
                     favorites.splice(i, 1);
                 }
             }
+            $localStorage.storeObject('favorites', favorites);
         };
 
         function getFavorites() {
@@ -59,14 +61,16 @@ angular.module('conFusion.services', ['ngResource'])
     .factory('$localStorage', ['$window', function($window) {
         return {
             store: function(key, value) {
-                typeof key === 'string' ? 
-                    $window.localStorage[key] = JSON.stringify(value) : 
-                    $window.localStorage[key] = value;
+                $window.localStorage[key] = value;
             },
             get: function(key, defaultValue) {
-                return typeof key === 'string' ?
-                    JSON.parse($window.localStorage[key] || defaultValue) :
-                    $window.localStorage[key] || defaultValue;
+                return $window.localStorage[key] || defaultValue;
+            },
+            storeObject: function(key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function(key, defaultValue) {
+                return JSON.parse($window.localStorage[key] || defaultValue);
             }
         }
     }]);

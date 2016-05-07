@@ -23,7 +23,7 @@ angular.module('conFusion.controllers', [])
         //$scope.$on('$ionicView.enter', function(e) {
         //});
 
-        $scope.loginData = $localStorage.get('userinfo','{}');
+        $scope.loginData = $localStorage.getObject('userinfo', '{}');
         $scope.reservation = {};
 
         $ionicModal.fromTemplateUrl('templates/reserve.html', {
@@ -66,7 +66,7 @@ angular.module('conFusion.controllers', [])
 
         $scope.doLogin = function() {
             console.log('Doing login', $scope.loginData);
-            $localStorage.store('userinfo', $scope.loginData);
+            $localStorage.storeObject('userinfo', $scope.loginData);
 
             $timeout(function() {
                 $scope.closeLogin();
@@ -112,8 +112,8 @@ angular.module('conFusion.controllers', [])
 
     }])
 
-    .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
-        function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+    .controller('MenuController', ['$scope', 'favoriteFactory', 'baseURL', '$ionicListDelegate', 'dishes',
+        function ($scope, favoriteFactory, baseURL, $ionicListDelegate, dishes) {
     
         $scope.baseURL = baseURL;
         $scope.tab = 1;
@@ -121,17 +121,8 @@ angular.module('conFusion.controllers', [])
         $scope.showDetails = false;
         $scope.showMenu = false;
         $scope.message = "Loading ...";
-            
-        menuFactory.query(
-            function(response) {
-                $scope.dishes = response;
-                $scope.showMenu = true;
-            },
-            function(response) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-        });
-
-                
+        $scope.dishes = dishes;    
+        
         $scope.select = function(setTab) {
             $scope.tab = setTab;
       
@@ -278,33 +269,22 @@ angular.module('conFusion.controllers', [])
                 
             $scope.mycomment = {rating:5, comment:"", author:"", date:""};
         }
-  }])
+    }])
 
-    .controller('IndexController', ['$scope', 'menuFactory', 'promotionFactory', 'corporateFactory', 'baseURL',
-         function ($scope, menuFactory, promotionFactory, corporateFactory, baseURL) {
+    .controller('IndexController', ['$scope', 'baseURL', 'dish', 'promotion', 'leader',
+        function ($scope, baseURL, dish, promotion, leader) {
 
         $scope.baseURL = baseURL;
-        $scope.leader = corporateFactory.get({id:3});
-
         $scope.showDish = false;
         $scope.message="Loading ...";
 
-        $scope.dish = menuFactory.get({id:0})
-            .$promise.then(
-                function(response){
-                    $scope.dish = response;
-                    $scope.showDish = true;
-                },
-                function(response) {
-                    $scope.message = "Error: "+response.status + " " + response.statusText;
-                });
+        $scope.dish = dish;
+        $scope.leader = leader;
+        $scope.promotion = promotion;
+    }])
 
-        $scope.promotion = menuFactory.get({id:0});
-  }])
-
-    .controller('AboutController', ['$scope', 'corporateFactory', 'baseURL', function($scope, corporateFactory, baseURL) {
+    .controller('AboutController', ['$scope', 'baseURL', 'leaders', function($scope, baseURL, leaders) {
         $scope.baseURL = baseURL;
         $scope.ourHistory = 'Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.';
-        $scope.leaders = corporateFactory.query();
-            
+        $scope.leaders = leaders;
     }]);
